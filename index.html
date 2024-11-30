@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WildGuardians</title>
+
+  <!-- styles -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    .box {
+        display: flex;              
+        justify-content: center;    
+        align-items: center;      
+        overflow: hidden;
+        flex-wrap: nowrap;         
+        height: 100vh;             
+        position: relative; 
+    }
+    .block_title{
+        font-size: 50px;
+        color: aliceblue;
+    }
+    .block {
+        display: inline-block;
+        width: 300px;
+        height: 200px;
+        margin: 10px;              
+        position: relative; 
+        z-index: 1; 
+        overflow: hidden; /* Ensure overflow is hidden */
+        background-color: bisque; /* Default color for blocks */
+        transition: background-color 0.3s; /* Smooth transition for color change */
+    }
+    .block img {
+        max-width: 100%;  /* Limit image width to block's width */
+        max-height: 100%; /* Limit image height to block's height */
+        object-fit: contain;
+        transition: filter 0.3s;
+        filter: grayscale(100%); /* Apply grayscale to the image */
+    }
+    .block.active img {
+        filter: none; /* Remove grayscale effect */
+    }
+    .Role {
+        width: 100px; /* Size of the Role image */
+        height: 100px; /* Size of the Role image */
+        position: absolute;
+        z-index: 2;
+        transition: left 0.3s, top 0.3s; 
+        top: -50px; /* Set initial position above the block */
+        left: 110px; /* Centered over the first block */
+        background-size: cover; /* Ensure the background image covers the div */
+    }
+    @keyframes Rolerun {
+        0% {
+            background-image: url("img/微信图片_20241130153615-removebg-preview.png");
+        }
+        50% {
+            background-image: url("img/微信图片_20241130153621-removebg-preview.png");
+        }
+        100% {
+            background-image: url("img/微信图片_20241130153625-removebg-preview.png");
+        }
+    }
+    @keyframes jump {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-30px); /* Adjust the jump height */
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    /* Mobile styles */
+    @media (max-width: 600px) {
+        .box {
+            flex-direction: column; /* Stack blocks vertically */
+            height: auto; /* Allow height to adjust */
+            padding: 20px; /* Add some padding */
+        }
+        .block {
+            width: 90%; /* Full width on mobile */
+            height: auto; /* Adjust height for images */
+            margin: 10px 0; /* Vertical margin */
+        }
+        .Role {
+            width: 80px; /* Smaller role image on mobile */
+            height: 80px; /* Smaller role image on mobile */
+        }
+    }
+    h1{
+        position: absolute;
+    }
+</style>
+</head>
+
+<body>
+  <section id="about">
+    <div class="section-box">
+      <div class="content-grid">
+        <div class="left-grid">
+          <a class="header-logo"><span>新年</span>即将来临</a>
+          <h2 class="section-title">元旦</h2>
+          <div class="box">
+              <div class="Role" style="top: -50px; left: 110px;"></div>
+              <div class="block" onclick="moveRole(this)">
+                  <div class="block_title">0%</div>
+                  <img src="./img/render003.jpg" alt="Image 0%">
+              </div>
+              <div class="block" onclick="moveRole(this)">
+                  <div class="block_title">20%</div>
+                  <img src="./img/板栗.jpg" alt="Image 20%">
+              </div>
+              <div class="block" onclick="moveRole(this)">
+                  <div class="block_title">40%</div>
+                  <img src="./img/热贴.jpg" alt="Image 40%">
+              </div>
+              <div class="block" onclick="moveRole(this)">
+                  <div class="block_title">60%</div>
+                  <img src="./img/糖芦、.jpg" alt="Image 60%">
+              </div>
+              <div class="block" onclick="moveRole(this)">
+                  <div class="block_title">80%</div>
+                  <img src="./img/红薯.jpg" alt="Image 80%">
+              </div>
+              <div class="block" onclick="moveRole(this)">
+                  <div class="block_title">100%</div>
+                  <img src="./img/render003.jpg" alt="Image 100%">
+              </div>
+          </div>
+          <script>
+              function moveRole(element) {
+                  const role = document.querySelector(".Role");
+                  const rect = element.getBoundingClientRect();
+                  const boxRect = document.querySelector(".box").getBoundingClientRect();
+      
+                  // Reset previous active block's state
+                  const previousActive = document.querySelector('.block.active');
+                  if (previousActive) {
+                      previousActive.classList.remove('active'); // Remove active class from the previously active block
+                  }
+      
+                  // Set the new active block
+                  element.classList.add('active'); // Add active class to the clicked block
+      
+                  const top = rect.top - boxRect.top - role.offsetHeight; // Position above the block
+                  const left = rect.left - boxRect.left + (rect.width / 2) - (role.offsetWidth / 2); // Center above the block
+      
+                  // Trigger jump animation
+                  role.style.animation = 'jump 0.5s ease, Rolerun 1s infinite'; 
+      
+                  // Move the Role
+                  role.style.top = `${top}px`;
+                  role.style.left = `${left}px`;
+      
+                  // Reset animation after it completes
+                  role.addEventListener('animationend', () => {
+                      role.style.animation = 'Rolerun 1s infinite';
+                  }, { once: true });
+              }
+          </script>
+          <footer>
+              <div class="footer">
+                  <p>😁由苹果喵喵制作</p><a href="https://github.com/PingGuoMiaoMiao">github</a>
+              </div>
+          </footer>
+        
+  </section>
+</body>
+
+</html>
